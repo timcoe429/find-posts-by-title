@@ -1,59 +1,74 @@
 <?php
 /*
 Plugin Name: Find Posts by Title
-Description: Search blog posts by title from the admin, and open them in a new tab.
+Description: Adds a clean admin interface to search posts by title with options to edit in Gutenberg or Classic editor.
 Version: 1.2
 Author: Tim Coe
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
-// Add submenu under "Posts"
-add_action('admin_menu', function () {
+// Register the submenu under "Posts"
+add_action('admin_menu', function() {
 	add_submenu_page(
-		'edit.php',              // Parent: Posts menu
-		'Find Posts by Title',   // Page title
-		'Find by Title',         // Menu label
-		'edit_posts',            // Capability
-		'find-by-title',         // Slug
-		'find_posts_by_title_page' // Callback
+		'edit.php', // parent slug (Posts menu)
+		'Find Posts by Title', // page title
+		'Find by Title',       // menu title
+		'edit_posts',          // capability
+		'find-by-title',       // menu slug
+		'find_posts_by_title_render_page' // callback
 	);
 });
 
-// Render page content
-function find_posts_by_title_page() {
+// Render the custom admin page
+function find_posts_by_title_render_page() {
 	if (!current_user_can('edit_posts')) return;
 
 	global $wpdb;
-	$search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
+
+	$search_term = '';
+	if (isset($_GET['s']) && isset($_GET['find_posts_by_title_nonce'])) {
+		if (!wp_verify_nonce($_GET['find_posts_by_title_nonce'], 'find_posts_by_title_action')) {
+			wp_die('Security check failed');
+		}
+		$search_term = sanitize_text_field(wp_unslash($_GET['s']));
+	}
 
 	echo '<div class="wrap">';
 	echo '<h1>Find Posts by Title</h1>';
-	echo '<form method="get" style="margin: 20px 0;">';
-	echo '<input type="hidden" name="page" value="find-by-title">';
-	echo '<input type="text" name="s" value="' . esc_attr($search) . '" placeholder="Search by title..." style="width:300px;"> ';
-	echo '<input type="submit" class="button button-primary" value="Search">';
+	echo '<form method="get" style="margin-top: 20px; margin-bottom: 20px;">';
+	echo '<input type="hidden" name="page" value="find-by-title" />';
+	wp_nonce_field('find_posts_by_title_action', 'find_posts_by_title_nonce');
+	echo '<input type="text" name="s" value="' . esc_attr($search_term) . '" placeholder="Enter title keyword..." style="width: 300px;" />';
+	echo ' <input type="submit" class="button button-primary" value="Search">';
 	echo '</form>';
 
-	if ($search) {
-		$like = '%' . $wpdb->esc_like($search) . '%';
-		$posts = $wpdb->get_results(
+	if ($search_term) {
+		$like = '%' . $wpdb->esc_like($search_term) . '%';
+		$results = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'publish' AND post_title LIKE %s ORDER BY post_date DESC",
 				$like
 			)
 		);
 
-		if ($posts) {
-			echo '<h2>Results</h2><ul style="margin-top:15px;">';
-			foreach ($posts as $post) {
-				$edit_url = admin_url("post.php?post={$post->ID}&action=edit");
-				echo "<li style='margin-bottom:10px;'>
-						<strong>" . esc_html($post->post_title) . "</strong><br>
-						<a href='" . esc_url($edit_url) . "' target='_blank' style='font-size:13px;'>✏️ Edit Post</a>
-					  </li>";
+		if ($results) {
+			echo '<h2>Results</h2><ul style="margin-top: 15px;">';
+			foreach ($results as $post) {
+				$gutenberg_url = admin_url('post.php?post=' . $post->ID . '&action=edit&gutenberg-editor');
+				$classic_url   = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor');
+
+				echo '<li style="margin-bottom: 10px;">';
+				echo '<strong>' . esc_html($post->post_title) . '</strong><br>';
+				echo '<span style="margin-left: 10px; font-size: 13px;">';
+				echo '<a href="' . esc_url($gutenberg_url) . '" target="_blank">Edit in Gutenberg</a> &nbsp;|&nbsp; ';
+				echo '<a href="' . esc_url($classic_url) . '" target="_blank">Edit in Classic</a>';
+				echo '</span>';
+				echo '</li>';
 			}
 			echo '</ul>';
 		} else {
-			echo '<p>No posts found.</p>';
+			echo '<p>No posts found matching that title.</p>';
 		}
 	}
 
