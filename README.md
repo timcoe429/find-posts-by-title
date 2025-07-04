@@ -1,44 +1,51 @@
 === Find Posts by Title ===
-Contributors: timcoe429
-Tags: admin, search, backend, gutenberg, classic editor
-Requires at least: 5.0
-Tested up to: 6.5
-Stable tag: trunk
-Requires PHP: 7.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Contributors: timcoe429  
+Tags: admin, search, backend, gutenberg, classic editor  
+Requires at least: 5.0  
+Tested up to: 6.5  
+Stable tag: 1.2  
+Requires PHP: 7.0  
+License: GPLv2 or later  
+License URI: https://www.gnu.org/licenses/gpl-2.0.html  
 
-Search and edit blog posts by title from a clean admin screen. Supports both Gutenberg and Classic Editor. No bloat — just fast post finding.
+Quickly search blog post titles from the WordPress admin and jump straight to edit mode. Supports both Gutenberg and Classic Editor — no bloat, just speed.
 
 == Description ==
 
-Scrolling through hundreds of posts to find one is a waste of time.
+Tired of scrolling through dozens (or hundreds) of posts to find what you need?
 
-This plugin adds a submenu under "Posts" called "Find by Title" — where you can quickly search for post titles and edit them in either Gutenberg or Classic editor.
+**Find Posts by Title** adds a simple search page under the **Posts** menu. Just type a keyword from the title and instantly see matching posts with links to:
 
-Perfect for large blogs or content-heavy WordPress installs.
+- Edit in Gutenberg
+- Edit in Classic Editor (if installed)
+
+It’s perfect for blogs, news sites, and content-heavy installs where quick access matters.
 
 == Installation ==
 
 1. Upload the plugin folder to `/wp-content/plugins/`
-2. Activate the plugin via the Plugins screen
-3. Go to **Posts > Find by Title**
+2. Activate the plugin through the **Plugins** menu
+3. Go to **Posts → Find by Title**
 
 == Frequently Asked Questions ==
 
-= Does it work with custom post types? =
-Not yet, but support may be added in the future.
+= Does it work with custom post types? =  
+Not yet — currently, it only searches the built-in `post` type. Future versions may add support for CPTs.
 
-= Does it require the Classic Editor plugin? =
-No. If Classic Editor is installed, you’ll see the link. If not, you can just use Gutenberg.
+= Do I need to install the Classic Editor plugin? =  
+No. The plugin will show the "Edit in Classic" link if Classic Editor is active. Otherwise, only Gutenberg will appear.
 
 == Changelog ==
 
-= 1.0.0 =
-* Initial release
+= 1.2 =
+* Added option to open posts in either Gutenberg or Classic Editor
+* Cleaned up UI
+* Moved link under Posts menu
+
+= 1.0 =
+* Initial release — search posts by title and edit quickly
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release — adds post title search and editor links.
-
+= 1.2 =
+Cleaner UI and added Classic Editor support.
