@@ -1,5 +1,5 @@
 === Find Posts by Title ===
-Contributors: yourgithubusername
+Contributors: timcoe429
 Tags: admin, search, backend, gutenberg, classic editor
 Requires at least: 5.0
 Tested up to: 6.5
