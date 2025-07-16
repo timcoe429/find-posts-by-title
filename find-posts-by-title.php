@@ -36,19 +36,68 @@ function find_posts_by_title_admin_styles() {
 	<style>
 		.find-posts-search-form {
 			margin: 20px 0;
+			padding: 20px;
+			background: #f9f9f9;
+			border: 1px solid #ddd;
+			border-radius: 5px;
 		}
 		.find-posts-search-input {
-			width: 300px;
+			width: 350px;
+			padding: 8px 12px;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			font-size: 14px;
 		}
 		.find-posts-results {
-			margin-top: 15px;
+			margin-top: 20px;
 		}
 		.find-posts-result-item {
-			margin-bottom: 10px;
+			background: #fff;
+			border: 1px solid #e1e1e1;
+			border-radius: 4px;
+			padding: 15px;
+			margin-bottom: 12px;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+			transition: box-shadow 0.2s ease;
+		}
+		.find-posts-result-item:hover {
+			box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+		}
+		.find-posts-post-title {
+			color: #0073aa;
+			font-size: 16px;
+			margin-bottom: 8px;
+			line-height: 1.4;
 		}
 		.find-posts-edit-links {
-			margin-left: 10px;
+			display: block;
+			margin-top: 8px;
+		}
+		.find-posts-edit-links a {
+			display: inline-block;
+			padding: 6px 12px;
+			background: #0073aa;
+			color: #fff;
+			text-decoration: none;
+			border-radius: 3px;
 			font-size: 13px;
+			margin-right: 8px;
+			transition: background-color 0.2s ease;
+		}
+		.find-posts-edit-links a:hover {
+			background: #005a87;
+			color: #fff;
+		}
+		.find-posts-edit-links a:focus {
+			box-shadow: 0 0 0 2px #005a87;
+			outline: none;
+		}
+		.find-posts-no-results {
+			background: #fff2cc;
+			border: 1px solid #d4af37;
+			padding: 15px;
+			border-radius: 4px;
+			color: #8a6914;
 		}
 	</style>
 	<?php
@@ -89,7 +138,7 @@ function find_posts_by_title_render_page() {
 		);
 
 		if ($results) {
-			echo '<h2>Results</h2><ul class="find-posts-results">';
+			echo '<h2>Results</h2><div class="find-posts-results">';
 			foreach ($results as $post) {
 				// Standard WordPress edit URL (uses user's default editor)
 				$edit_url = admin_url('post.php?post=' . $post->ID . '&action=edit');
@@ -100,25 +149,24 @@ function find_posts_by_title_render_page() {
 				// Classic Editor URL (if Classic Editor plugin is active)
 				$classic_url = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor');
 
-				echo '<li class="find-posts-result-item">';
-				echo '<strong>' . esc_html($post->post_title) . '</strong><br>';
-				echo '<span class="find-posts-edit-links">';
+				echo '<div class="find-posts-result-item">';
+				echo '<div class="find-posts-post-title">' . esc_html($post->post_title) . '</div>';
+				echo '<div class="find-posts-edit-links">';
 				
 				// Always show Gutenberg option
 				echo '<a href="' . esc_url($gutenberg_url) . '" target="_blank">Edit in Gutenberg</a>';
 				
 				// Show Classic Editor option if the plugin is active or if it's available
 				if (is_plugin_active('classic-editor/classic-editor.php') || function_exists('the_gutenberg_project')) {
-					echo ' &nbsp;|&nbsp; ';
 					echo '<a href="' . esc_url($classic_url) . '" target="_blank">Edit in Classic</a>';
 				}
 				
-				echo '</span>';
-				echo '</li>';
+				echo '</div>';
+				echo '</div>';
 			}
-			echo '</ul>';
+			echo '</div>';
 		} else {
-			echo '<p>No posts found matching that title.</p>';
+			echo '<div class="find-posts-no-results">No posts found matching that title.</div>';
 		}
 	}
 
