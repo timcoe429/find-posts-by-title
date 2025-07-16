@@ -14,8 +14,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Register the submenu under "Posts"
-add_action('admin_menu', function() {
-	add_submenu_page(
+add_action('admin_menu', 'find_posts_by_title_admin_menu');
+
+function find_posts_by_title_admin_menu() {
+	$hook = add_submenu_page(
 		'edit.php', // parent slug (Posts menu)
 		'Find Posts by Title', // page title
 		'Find by Title',       // menu title
@@ -23,11 +25,40 @@ add_action('admin_menu', function() {
 		'find-by-title',       // menu slug
 		'find_posts_by_title_render_page' // callback
 	);
-});
+	
+	// Enqueue styles only on this page
+	add_action('admin_print_styles-' . $hook, 'find_posts_by_title_admin_styles');
+}
+
+// Enqueue admin styles
+function find_posts_by_title_admin_styles() {
+	?>
+	<style>
+		.find-posts-search-form {
+			margin: 20px 0;
+		}
+		.find-posts-search-input {
+			width: 300px;
+		}
+		.find-posts-results {
+			margin-top: 15px;
+		}
+		.find-posts-result-item {
+			margin-bottom: 10px;
+		}
+		.find-posts-edit-links {
+			margin-left: 10px;
+			font-size: 13px;
+		}
+	</style>
+	<?php
+}
 
 // Render the custom admin page
 function find_posts_by_title_render_page() {
-	if (!current_user_can('edit_posts')) return;
+	if (!current_user_can('edit_posts')) {
+		return;
+	}
 
 	global $wpdb;
 
@@ -41,10 +72,10 @@ function find_posts_by_title_render_page() {
 
 	echo '<div class="wrap">';
 	echo '<h1>Find Posts by Title</h1>';
-	echo '<form method="get" style="margin-top: 20px; margin-bottom: 20px;">';
+	echo '<form method="get" class="find-posts-search-form">';
 	echo '<input type="hidden" name="page" value="find-by-title" />';
 	wp_nonce_field('find_posts_by_title_action', 'find_posts_by_title_nonce');
-	echo '<input type="text" name="s" value="' . esc_attr($search_term) . '" placeholder="Enter title keyword..." style="width: 300px;" />';
+	echo '<input type="text" name="s" value="' . esc_attr($search_term) . '" placeholder="Enter title keyword..." class="find-posts-search-input" />';
 	echo ' <input type="submit" class="button button-primary" value="Search">';
 	echo '</form>';
 
@@ -58,16 +89,30 @@ function find_posts_by_title_render_page() {
 		);
 
 		if ($results) {
-			echo '<h2>Results</h2><ul style="margin-top: 15px;">';
+			echo '<h2>Results</h2><ul class="find-posts-results">';
 			foreach ($results as $post) {
-				$gutenberg_url = admin_url('post.php?post=' . $post->ID . '&action=edit&gutenberg-editor');
-				$classic_url   = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor');
+				// Standard WordPress edit URL (uses user's default editor)
+				$edit_url = admin_url('post.php?post=' . $post->ID . '&action=edit');
+				
+				// Force Gutenberg editor URL
+				$gutenberg_url = admin_url('post.php?post=' . $post->ID . '&action=edit');
+				
+				// Classic Editor URL (if Classic Editor plugin is active)
+				$classic_url = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor');
 
-				echo '<li style="margin-bottom: 10px;">';
+				echo '<li class="find-posts-result-item">';
 				echo '<strong>' . esc_html($post->post_title) . '</strong><br>';
-				echo '<span style="margin-left: 10px; font-size: 13px;">';
-				echo '<a href="' . esc_url($gutenberg_url) . '" target="_blank">Edit in Gutenberg</a> &nbsp;|&nbsp; ';
-				echo '<a href="' . esc_url($classic_url) . '" target="_blank">Edit in Classic</a>';
+				echo '<span class="find-posts-edit-links">';
+				
+				// Always show Gutenberg option
+				echo '<a href="' . esc_url($gutenberg_url) . '" target="_blank">Edit in Gutenberg</a>';
+				
+				// Show Classic Editor option if the plugin is active or if it's available
+				if (is_plugin_active('classic-editor/classic-editor.php') || function_exists('the_gutenberg_project')) {
+					echo ' &nbsp;|&nbsp; ';
+					echo '<a href="' . esc_url($classic_url) . '" target="_blank">Edit in Classic</a>';
+				}
+				
 				echo '</span>';
 				echo '</li>';
 			}
