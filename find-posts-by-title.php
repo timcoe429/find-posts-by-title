@@ -152,17 +152,34 @@ function find_posts_by_title_render_page() {
 
 				echo '<tr class="' . esc_attr($row_class) . '">';
 				echo '<td class="title column-title has-row-actions column-primary" data-colname="Title">';
-				echo '<strong>' . esc_html($post->post_title) . '</strong><br>';
+				echo '<strong>';
+				echo '<a class="row-title find-posts-title-link" href="' . esc_url($edit_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '"">';
+				echo esc_html($post->post_title);
+				echo '</a>';
+				echo '</strong>';
 				
-				// Original button-style links
-				echo '<div class="find-posts-edit-links">';
-				echo '<a href="' . esc_url($gutenberg_url) . '" target="_blank">Edit in Gutenberg</a>';
+				// WordPress-style row actions
+				echo '<div class="row-actions">';
+				$actions = array();
+				
+				$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit') . '</a></span>';
+				
+				// Live Builder (for Avada)
+				$live_builder_url = get_permalink($post->ID) . '?fb-edit=1';
+				$actions[] = '<span class="fusion_builder_live"><a href="' . esc_url($live_builder_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '" in Live Builder">Live Builder</a></span>';
+				
+				$actions[] = '<span class="gutenberg"><a href="' . esc_url($gutenberg_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '" in the Gutenberg editor">Gutenberg Editor</a></span>';
 				
 				// Show Classic Editor option if available
 				if (is_plugin_active('classic-editor/classic-editor.php') || function_exists('the_gutenberg_project')) {
-					echo ' &nbsp;|&nbsp; ';
-					echo '<a href="' . esc_url($classic_url) . '" target="_blank">Edit in Classic</a>';
+					$actions[] = '<span class="classic"><a href="' . esc_url($classic_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '" in Classic Editor">Classic Editor</a></span>';
 				}
+				
+				$actions[] = '<span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit "' . esc_attr($post->post_title) . '" inline" aria-expanded="false">Quick&nbsp;Edit</button></span>';
+				$actions[] = '<span class="trash"><a href="' . esc_url($trash_url) . '" class="submitdelete" aria-label="Move "' . esc_attr($post->post_title) . '" to the Trash">Trash</a></span>';
+				$actions[] = '<span class="view"><a href="' . esc_url($preview_url) . '" rel="bookmark" aria-label="View "' . esc_attr($post->post_title) . '"">View</a></span>';
+				
+				echo implode(' | ', $actions);
 				echo '</div>';
 				
 				echo '</td>';
@@ -250,14 +267,20 @@ function find_pages_by_title_render_page() {
 				echo '<div class="row-actions">';
 				$actions = array();
 				
-				// Always show Gutenberg option
-				$actions[] = '<span class="gutenberg"><a href="' . esc_url($gutenberg_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in the Gutenberg editor">Edit in Gutenberg</a></span>';
+				$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit') . '</a></span>';
+				
+				// Live Builder (for Avada)
+				$live_builder_url = get_permalink($post->ID) . '?fb-edit=1';
+				$actions[] = '<span class="fusion_builder_live"><a href="' . esc_url($live_builder_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '" in Live Builder">Live Builder</a></span>';
+				
+				$actions[] = '<span class="gutenberg"><a href="' . esc_url($gutenberg_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '" in the Gutenberg editor">Gutenberg Editor</a></span>';
 				
 				// Show Classic Editor option if available
 				if (is_plugin_active('classic-editor/classic-editor.php') || function_exists('the_gutenberg_project')) {
-					$actions[] = '<span class="classic"><a href="' . esc_url($classic_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in Classic Editor">Edit in Classic</a></span>';
+					$actions[] = '<span class="classic"><a href="' . esc_url($classic_url) . '" aria-label="Edit "' . esc_attr($post->post_title) . '" in Classic Editor">Classic Editor</a></span>';
 				}
 				
+				$actions[] = '<span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit "' . esc_attr($post->post_title) . '" inline" aria-expanded="false">Quick&nbsp;Edit</button></span>';
 				$actions[] = '<span class="trash"><a href="' . esc_url($trash_url) . '" class="submitdelete" aria-label="Move "' . esc_attr($post->post_title) . '" to the Trash">Trash</a></span>';
 				$actions[] = '<span class="view"><a href="' . esc_url($preview_url) . '" rel="bookmark" aria-label="View "' . esc_attr($post->post_title) . '"">View</a></span>';
 				
