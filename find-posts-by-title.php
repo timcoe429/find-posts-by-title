@@ -32,7 +32,7 @@ function find_posts_by_title_admin_menu() {
 		'edit.php?post_type=page', // parent slug (Pages menu)
 		'Find Pages by Title', // page title
 		'Find by Title',       // menu title
-		'edit_pages',          // capability
+		'edit_posts',          // capability
 		'find-pages-by-title', // menu slug
 		'find_pages_by_title_render_page' // callback
 	);
@@ -67,6 +67,12 @@ function find_posts_by_title_admin_styles() {
 		}
 		.find-posts-results-table .column-title {
 			width: 100%;
+		}
+		.find-posts-results-table .wp-list-table .alternate {
+			background-color: #f6f7f7;
+		}
+		.find-posts-results-table .wp-list-table tr:not(.alternate) {
+			background-color: #fff;
 		}
 		.find-posts-title-link {
 			font-weight: 600;
@@ -189,7 +195,7 @@ function find_posts_by_title_render_page() {
 
 // Render the custom admin page for Pages
 function find_pages_by_title_render_page() {
-	if (!current_user_can('edit_pages')) {
+	if (!current_user_can('edit_posts')) {
 		return;
 	}
 
