@@ -145,8 +145,8 @@ function find_posts_by_title_render_page() {
 				
 				// Standard edit URLs
 				$edit_url = admin_url('post.php?post=' . $post->ID . '&action=edit');
-				$gutenberg_url = admin_url('post.php?post=' . $post->ID . '&action=edit');
-				$classic_url = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor');
+				$gutenberg_url = admin_url('post.php?post=' . $post->ID . '&action=edit&block-editor=1');
+				$classic_url = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor=1');
 				$trash_url = wp_nonce_url(admin_url('post.php?post=' . $post->ID . '&action=trash'), 'trash-post_' . $post->ID);
 				$preview_url = get_permalink($post->ID);
 
@@ -246,8 +246,8 @@ function find_pages_by_title_render_page() {
 				
 				// Standard edit URLs
 				$edit_url = admin_url('post.php?post=' . $post->ID . '&action=edit');
-				$gutenberg_url = admin_url('post.php?post=' . $post->ID . '&action=edit');
-				$classic_url = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor');
+				$gutenberg_url = admin_url('post.php?post=' . $post->ID . '&action=edit&block-editor=1');
+				$classic_url = admin_url('post.php?post=' . $post->ID . '&action=edit&classic-editor=1');
 				$trash_url = wp_nonce_url(admin_url('post.php?post=' . $post->ID . '&action=trash'), 'trash-post_' . $post->ID);
 				$preview_url = get_permalink($post->ID);
 
