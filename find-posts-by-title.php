@@ -32,7 +32,7 @@ function find_posts_by_title_admin_menu() {
 		'edit.php?post_type=page', // parent slug (Pages menu)
 		'Find Pages by Title', // page title
 		'Find by Title',       // menu title
-		'edit_posts',          // capability
+		'edit_pages',          // capability
 		'find-pages-by-title', // menu slug
 		'find_pages_by_title_render_page' // callback
 	);
@@ -195,7 +195,7 @@ function find_posts_by_title_render_page() {
 
 // Render the custom admin page for Pages
 function find_pages_by_title_render_page() {
-	if (!current_user_can('edit_posts')) {
+	if (!current_user_can('edit_pages')) {
 		return;
 	}
 
@@ -212,6 +212,7 @@ function find_pages_by_title_render_page() {
 	echo '<div class="wrap">';
 	echo '<h1>Find Pages by Title</h1>';
 	echo '<form method="get" class="find-posts-search-form">';
+	echo '<input type="hidden" name="post_type" value="page" />';
 	echo '<input type="hidden" name="page" value="find-pages-by-title" />';
 	wp_nonce_field('find_pages_by_title_action', 'find_pages_by_title_nonce');
 	echo '<input type="text" name="s" value="' . esc_attr($search_term) . '" placeholder="Enter title keyword..." class="find-posts-search-input" />';
