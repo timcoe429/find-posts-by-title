@@ -4,9 +4,14 @@ Plugin Name: Find Posts by Title
 Description: Adds a clean admin interface to search posts by title with options to edit in Gutenberg or Classic editor.
 Version: 1.2
 Author: Tim Coe
+Requires at least: 5.0
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Register the submenu under "Posts"
 add_action('admin_menu', function() {
