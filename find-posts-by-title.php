@@ -158,15 +158,11 @@ function find_posts_by_title_render_page() {
 					echo '</a>';
 					echo '</strong>';
 					
-					// WordPress-style row actions
+										// WordPress-style row actions
 					echo '<div class="row-actions">';
 					$actions = array();
 					
 					$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit') . '</a></span>';
-					
-					// Live Builder (for Avada)
-					$live_builder_url = get_permalink($post->ID) . '?fb-edit=1';
-					$actions[] = '<span class="fusion_builder_live"><a href="' . esc_url($live_builder_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in Live Builder">Live Builder</a></span>';
 					
 					$actions[] = '<span class="gutenberg"><a href="' . esc_url($gutenberg_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in the Gutenberg editor">Gutenberg Editor</a></span>';
 					
@@ -184,13 +180,13 @@ function find_posts_by_title_render_page() {
 					echo '</td>';
 					echo '</tr>';
 				}
-			
-			echo '</tbody>';
-			echo '</table>';
-			echo '</div>';
-		} else {
-			echo '<div class="find-posts-no-results">No posts found matching that title.</div>';
-		}
+				
+				echo '</tbody>';
+				echo '</table>';
+				echo '</div>';
+			} else {
+				echo '<div class="find-posts-no-results">No posts found matching that title.</div>';
+			}
 	}
 
 	echo '</div>';
@@ -262,15 +258,11 @@ function find_pages_by_title_render_page() {
 					echo '</a>';
 					echo '</strong>';
 					
-					// WordPress-style row actions
+										// WordPress-style row actions
 					echo '<div class="row-actions">';
 					$actions = array();
 					
 					$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit') . '</a></span>';
-					
-					// Live Builder (for Avada)
-					$live_builder_url = get_permalink($post->ID) . '?fb-edit=1';
-					$actions[] = '<span class="fusion_builder_live"><a href="' . esc_url($live_builder_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in Live Builder">Live Builder</a></span>';
 					
 					$actions[] = '<span class="gutenberg"><a href="' . esc_url($gutenberg_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in the Gutenberg editor">Gutenberg Editor</a></span>';
 					
@@ -288,13 +280,13 @@ function find_pages_by_title_render_page() {
 					echo '</td>';
 					echo '</tr>';
 				}
-			
-			echo '</tbody>';
-			echo '</table>';
-			echo '</div>';
-		} else {
-			echo '<div class="find-posts-no-results">No pages found matching that title.</div>';
-		}
+				
+				echo '</tbody>';
+				echo '</table>';
+				echo '</div>';
+			} else {
+				echo '<div class="find-posts-no-results">No pages found matching that title.</div>';
+			}
 	}
 
 	echo '</div>';
