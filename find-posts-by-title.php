@@ -103,7 +103,7 @@ function find_posts_by_title_render_page() {
 
 	$search_term = '';
 	if (isset($_GET['s']) && isset($_GET['find_posts_by_title_nonce'])) {
-		if (!wp_verify_nonce($_GET['find_posts_by_title_nonce'], 'find_posts_by_title_action')) {
+		if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['find_posts_by_title_nonce'])), 'find_posts_by_title_action')) {
 			wp_die('Security check failed');
 		}
 		$search_term = sanitize_text_field(wp_unslash($_GET['s']));
@@ -162,7 +162,7 @@ function find_posts_by_title_render_page() {
 					echo '<div class="row-actions">';
 					$actions = array();
 					
-					$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit') . '</a></span>';
+					$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit', 'find-posts-by-title') . '</a></span>';
 					
 					$actions[] = '<span class="gutenberg"><a href="' . esc_url($gutenberg_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in the Gutenberg editor">Gutenberg Editor</a></span>';
 					
@@ -174,7 +174,7 @@ function find_posts_by_title_render_page() {
 					$actions[] = '<span class="trash"><a href="' . esc_url($trash_url) . '" class="submitdelete" aria-label="Move "' . esc_attr($post->post_title) . '" to the Trash">Trash</a></span>';
 					$actions[] = '<span class="view"><a href="' . esc_url($preview_url) . '" target="_blank" rel="bookmark" aria-label="View "' . esc_attr($post->post_title) . '"">View</a></span>';
 					
-					echo implode(' | ', $actions);
+					echo wp_kses_post(implode(' | ', $actions));
 					echo '</div>';
 					
 					echo '</td>';
@@ -202,7 +202,7 @@ function find_pages_by_title_render_page() {
 
 	$search_term = '';
 	if (isset($_GET['s']) && isset($_GET['find_pages_by_title_nonce'])) {
-		if (!wp_verify_nonce($_GET['find_pages_by_title_nonce'], 'find_pages_by_title_action')) {
+		if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['find_pages_by_title_nonce'])), 'find_pages_by_title_action')) {
 			wp_die('Security check failed');
 		}
 		$search_term = sanitize_text_field(wp_unslash($_GET['s']));
@@ -262,7 +262,7 @@ function find_pages_by_title_render_page() {
 					echo '<div class="row-actions">';
 					$actions = array();
 					
-					$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit') . '</a></span>';
+					$actions[] = '<span class="edit"><a href="' . esc_url($edit_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '"">' . __('Edit', 'find-posts-by-title') . '</a></span>';
 					
 					$actions[] = '<span class="gutenberg"><a href="' . esc_url($gutenberg_url) . '" target="_blank" aria-label="Edit "' . esc_attr($post->post_title) . '" in the Gutenberg editor">Gutenberg Editor</a></span>';
 					
@@ -274,7 +274,7 @@ function find_pages_by_title_render_page() {
 					$actions[] = '<span class="trash"><a href="' . esc_url($trash_url) . '" class="submitdelete" aria-label="Move "' . esc_attr($post->post_title) . '" to the Trash">Trash</a></span>';
 					$actions[] = '<span class="view"><a href="' . esc_url($preview_url) . '" target="_blank" rel="bookmark" aria-label="View "' . esc_attr($post->post_title) . '"">View</a></span>';
 					
-					echo implode(' | ', $actions);
+					echo wp_kses_post(implode(' | ', $actions));
 					echo '</div>';
 					
 					echo '</td>';

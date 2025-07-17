@@ -1,8 +1,8 @@
 === Find Posts by Title ===
 Contributors: timcoe429  
-Tags: admin, search, backend, gutenberg, classic editor, pages  
+Tags: admin, search, gutenberg, classic editor, posts  
 Requires at least: 5.0  
-Tested up to: 6.5  
+Tested up to: 6.8  
 Requires PHP: 7.0  
 Stable tag: 1.6  
 License: GPLv2 or later  
