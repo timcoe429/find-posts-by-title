@@ -38,8 +38,11 @@ function find_posts_by_title_admin_menu() {
 	);
 	
 	// Enqueue styles on both pages
-	add_action('admin_print_styles-' . $hook_posts, 'find_posts_by_title_admin_styles');
-	add_action('admin_print_styles-' . $hook_pages, 'find_posts_by_title_admin_styles');
+	add_action('admin_enqueue_scripts', function($hook_suffix) use ($hook_posts, $hook_pages) {
+		if ($hook_suffix === $hook_posts || $hook_suffix === $hook_pages) {
+			find_posts_by_title_admin_styles();
+		}
+	});
 }
 
 // Enqueue admin styles
