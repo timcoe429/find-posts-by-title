@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Find Posts by Title
-Description: Adds a clean admin interface to search posts by title with options to edit in Gutenberg or Classic editor.
+Description: Adds a clean admin interface to search posts and pages by title with options to edit in Gutenberg or Classic editor.
 Version: 1.6
 Author: Tim Coe
 Requires at least: 5.0
